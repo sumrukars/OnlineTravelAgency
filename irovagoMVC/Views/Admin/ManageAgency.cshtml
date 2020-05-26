@@ -1,0 +1,74 @@
+﻿@model IEnumerable<irovagoMVC.Models.AgencyMVCModel>
+
+@{
+    ViewBag.Title = "ManageAgency";
+}
+
+<h2>ManageAgency</h2>
+
+<p>
+    @Html.ActionLink("Create New", "AddAgency")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.brand)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.brand)
+            </td>
+            <td>
+                <button id="deleteNewRoom" type="button" onclick="DeleteAgency(@item.agencyID)" style="background-color:transparent; border:none;">
+                    <i class="glyphicon glyphicon-trash"></i>
+                </button>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function DeleteAgency(agencyId) {
+
+           $.ajax({
+                url: '@Url.Action("DeleteAgency", "Admin")',
+                data: {agencyId: agencyId},
+                type: "POST",
+                success: function (response) {
+                           window.location = '@Url.Action("ManageAgency", "Admin")';
+                },
+                error: function () {
+
+                }
+
+            });       
+             
+        }
+    </script>
+}

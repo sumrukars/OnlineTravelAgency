@@ -1,0 +1,41 @@
+﻿@model IEnumerable<irovagoMVC.Models.OfferMVCModel>
+@{
+    ViewBag.Title = "AgencyHomePage";
+}
+
+<div class="container" id="myDIV">
+    <h1>Offers</h1>
+    <p>You can search any feature here to find your perfect Hotel</p>
+    <input class="form-control" id="myInput" type="text" placeholder="Search.." style="width:100%;  margin-top:10px; margin-bottom:10px;">
+    @foreach (var item in Model)
+    {
+        <div class="card mb-3" id="card-hotels">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img class="card-img-top" style="width:100%; height:200px;" src="@item.Hotel.imgHotel" alt="Card image cap">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body" style="padding-bottom:10px;">
+                        <h2 class="card-title">@item.Hotel.name</h2>
+                        <p class="card-text">@item.Hotel.explanation</p>
+                        <p class="card-text">@item.Hotel.address</p>
+                        <h3 class="card-text">@item.price TL</h3>
+                        <p class="card-text">@item.Agency.brand</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+           var value = $(this).val().toLowerCase();
+            $(".card").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+        });;
+    });
+</script>
+

@@ -1,0 +1,249 @@
+﻿@model irovagoMVC.Models.ManageHotelMVCModel
+
+@{
+
+    ViewBag.Title = "AddHotel";
+}
+
+
+
+@using (@Html.BeginForm( new { id = "TheForm" }))
+{
+    <div class="form">
+        <h1>Add Or Update Hotel</h1>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.Hidden("modelHotelId", Model.hotel.hotelID, new { @id = "modelHotelId" })
+
+    <div class="form-group">
+        <h4>Hotel Image</h4>
+        
+        @if (Model.hotel.imgHotel == null)
+        {
+            <img src="~/Content/Images/no-image-available.png" class="img-responsive" id="hotelImage" style="margin-top:5px; width:400px;" />
+        }
+        else
+        {
+            <img src="@Model.hotel.imgHotel" class="img-responsive" id="hotelImage" style="margin-top:5px; width:400px;" />
+        }
+        <input type="file" id="file" style="width: 100%; margin-top:20px;" value="Select Image" onchange="uploadHotel()" />
+        <hr />
+    </div>
+
+        <div class="form-group" >
+            @Html.LabelFor(model => model.hotel.name, htmlAttributes: new { @class = "col-md-2" })
+            <div class="col-md-10" style="margin-bottom:5px;">
+                @Html.EditorFor(model => model.hotel.name, new { htmlAttributes = new { @class = "form-control", @id = "modelName" } })
+                @Html.ValidationMessageFor(model => model.hotel.name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" >
+            @Html.LabelFor(model => model.hotel.address, htmlAttributes: new { @class = "col-md-2" })
+            <div class="col-md-10" style="margin-bottom:5px;">
+                @Html.EditorFor(model => model.hotel.address, new { htmlAttributes = new { @class = "form-control", @id = "modelAddress" } })
+                @Html.ValidationMessageFor(model => model.hotel.address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" >
+            @Html.LabelFor(model => model.hotel.url, htmlAttributes: new { @class = "col-md-2" })
+            <div class="col-md-10" style="margin-bottom:5px;">
+                @Html.EditorFor(model => model.hotel.url, new { htmlAttributes = new { @class = "form-control", @id = "modelUrl" } })
+                @Html.ValidationMessageFor(model => model.hotel.url, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" >
+            @Html.LabelFor(model => model.hotel.explanation, htmlAttributes: new { @class = "col-md-2" })
+            <div class="col-md-10" style="margin-bottom:5px;">
+                @Html.EditorFor(model => model.hotel.explanation, new { htmlAttributes = new { @class = "form-control", @id = "modelExplanation" } })
+                @Html.ValidationMessageFor(model => model.hotel.explanation, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <hr />
+            <h3>Room Types</h3>
+
+            <table class="table">
+
+
+                @foreach (var item in Model.hotelRoomList)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.displayName)
+                            <div hidden>
+                                @Html.EditorFor(modelItem => item)
+                            </div>
+                        </td>
+                        <td>
+                            <button id="deleteNewRoom" type="button" onclick="DeleteRoom(@item.roomTypeID)" style="background-color:transparent; border:none;">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </button>
+
+                        </td>
+                    </tr>
+                }
+            </table>
+            <hr />
+            <div class="col-md-10" style="padding-left:0px;">
+                <div class="col-md-5">
+                    @Html.DropDownListFor(model => model.roomType.roomTypeID, new SelectList(Model.roomList, "roomTypeID", "displayName"), "Select Room Type", new { @class = "form-control", @id = "dropDownList" })
+                </div>
+                <div class="col-md-3">
+                    <button id="addNewRoom" type="button" style="margin-top:10px;">Add New Room</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-12">
+                <br>
+                <button id="submit" type="button" onclick="SubmitHotel()" style="margin-bottom:20px;">Submit</button>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+
+    function uploadHotel() {
+       
+        $.ajax({
+            url: '@Url.Action("UploadImage", "Admin")',
+            data: function () {
+                var data = new FormData();
+                data.append("hotelId", jQuery("#modelHotelId").val());
+                data.append("name", jQuery("#modelName").val());
+                data.append("address", jQuery("#modelAddress").val());
+                data.append("url", jQuery("#modelAddress").val());
+                data.append("explanation", jQuery("#modelExplanation").val());
+                data.append("file", jQuery("#file").get(0).files[0]);
+                    return data;
+                }(),
+            type: "POST",
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                
+                window.location =  window.location = '@Url.Action("AddHotel", "Admin", new {id = -1})';
+            },
+            error: function () {
+
+            }
+
+        });
+
+        
+    }
+
+    function SubmitHotel() {
+
+            var hotelName = $("#modelName").val();
+            var modelHotelId = $("#modelHotelId").val();
+            var hotelAddress = $("#modelAddress").val();
+            var hotelUrl = $("#modelUrl").val();
+        var hotelExplanation = $("#modelExplanation").val();
+
+
+        var model = {
+            hotel: {
+
+                hotelId: modelHotelId,
+                name: hotelName,
+                address: hotelAddress,
+                url: hotelUrl,
+                explanation: hotelExplanation
+            }
+        };
+
+        $.ajax({
+            url: '@Url.Action("SubmitHotel", "Admin")',
+            data: { manageHotelMVCModel: model },
+            type: "POST",
+             dataType: "json",
+            success: function (response) {
+                
+                window.location = '@Url.Action("AddHotel", "Admin", new { id = "modelHotelId" })';
+            },
+            error: function () {
+
+            }
+
+        });
+
+    }
+
+    function DeleteRoom(roomTypeId) {
+
+            var hotelName = $("#modelName").val();
+            var modelHotelId = $("#modelHotelId").val();
+            var hotelAddress = $("#modelAddress").val();
+            var hotelUrl = $("#modelUrl").val();
+            var hotelExplanation = $("#modelExplanation").val();
+
+            var model = {
+                hotelId: modelHotelId,
+                name: hotelName,
+                address: hotelAddress,
+                url: hotelUrl,
+                explanation: hotelExplanation
+            };
+            if (roomTypeId != "") {
+                $.ajax({
+                    url: '@Url.Action("ArrangeRoomOfHotel", "Admin")',
+                    data: { roomTypeId: roomTypeId, isAdded: false, hotel: model },
+                    type: "POST",
+                    success: function (response) {
+                           window.location = '@Url.Action("AddHotel", "Admin", new {id = -1})';
+                    },
+                    error: function () {
+
+                    }
+
+                });
+            }
+    }
+
+    $(function () {
+        $('#addNewRoom').click(function () {
+            var roomTypeId = $("#dropDownList").val();
+            var hotelName = $("#modelName").val();
+            var modelHotelId = $("#modelHotelId").val();
+            var hotelAddress = $("#modelAddress").val();
+            var hotelUrl = $("#modelUrl").val();
+            var hotelExplanation = $("#modelExplanation").val();
+
+            var model = {
+                hotelId: modelHotelId,
+                name: hotelName,
+                address: hotelAddress,
+                url: hotelUrl,
+                explanation: hotelExplanation
+            };
+            if (roomTypeId != "") {
+                $.ajax({
+                    url: '@Url.Action("ArrangeRoomOfHotel", "Admin")',
+                    data: { roomTypeId: roomTypeId, isAdded: true, hotel: model },
+                    type: "POST",
+                 
+                    success: function (response) {
+                           window.location = '@Url.Action("AddHotel", "Admin", new {id = -1})';
+                    },
+                    error: function () {
+
+                    }
+
+                });
+            }
+        });
+
+    });
+
+
+</script>
+
+}

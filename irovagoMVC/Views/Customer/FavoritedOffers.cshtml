@@ -1,0 +1,66 @@
+﻿@model List<irovagoMVC.Models.FavoriteOffersMVCModel>
+@{
+    ViewBag.Title = "FavoritedOffers";
+}
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+
+    
+<div class="container" id="myDIV">
+    <h1>Favorited Offers</h1>
+    <p>You can search any feature here to find your perfect Hotel</p>
+    <input class="form-control" id="myInput" type="text" placeholder="Search.." style="width:100%;  margin-top:10px; margin-bottom:10px;">
+
+
+    @foreach (var item in Model)
+    {
+        @Html.HiddenFor(modelItem => item.favoriteOfferID)
+        <div class="card mb-3" id="card-hotels">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img class="card-img-top" style="width:100%; height:200px;" src="@item.Offer.Hotel.imgHotel" alt="Card image cap">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body" style="padding-bottom:10px;">
+                        <h2 class="card-title">@item.Offer.Hotel.name</h2>
+                        <p class="card-text">@item.Offer.Hotel.explanation</p>
+                        <p class="card-text">@item.Offer.Hotel.address</p>
+                        <h3 class="card-text">@item.Offer.price TL</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="card-text">@item.Offer.Agency.brand                                                     </p>
+                            </div>
+                            <div class="col-md-6">
+                                @using (Html.BeginForm("FavoritedOffers", "Customer"))
+                                {
+                                    <input type="hidden" name="id" value="@item.favoriteOfferID" />
+                                    <button class="star glyphicon glyphicon-star" value="FavoritedOffers" type="submit" style="font-size:25px; color:gold; float:right; margin-right:20px; border:none; background-color:transparent;"></button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $(".card").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            $(".star.glyphicon").click(function () {
+                $(this).toggleClass("glyphicon-star glyphicon-star-empty");
+            });
+        });
+    </script>
+}
+    
+

@@ -1,0 +1,92 @@
+﻿@model irovagoMVC.Models.AgencyMVCModel
+@{
+    ViewBag.Title = "AgencyProfile";
+}
+
+
+@using (Html.BeginForm("AgencyProfile", "Agency", FormMethod.Post, new { @class = "container bootstrap snippet"}))
+{
+    <br />
+    <h1>Update Your Agency Information</h1>
+    <hr>
+    <div class="row">
+        <div class="col-sm-3">
+            <!--left col-->
+
+
+            <br>
+            <ul class="list-group" style="margin-top:25px;">
+                <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Offers</strong></span>@Model.offerCount</li>
+            </ul>
+
+
+
+        </div><!--/col-3-->
+        <div class="col-sm-9" id="form">
+
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="home">
+
+                    <form class="form" action="##" method="post" id="registrationForm">
+
+                        <div class="form-group">
+
+                            <div class="col-xs-6">
+                                <label for="brand_name">Brand name</label>
+                                @Html.TextBoxFor(model => model.brand, new { @class = "form-control", placeholder = "Enter brandname" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <label for="phone">Phone</label>
+                                @Html.TextBoxFor(model => model.phone, new { @class = "form-control", placeholder = "Enter phone" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-xs-6">
+                                <label for="email">Email</label>
+                                @Html.TextBoxFor(model => model.email, new { @class = "form-control", placeholder = "Enter email" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <div class="col-xs-6">
+                                <label for="address">Address</label>
+                                @Html.TextBoxFor(model => model.address, new { @class = "form-control", placeholder = "Enter address" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <br>
+                                <button type="submit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr>
+
+                </div><!--/tab-pane-->
+            </div><!--/tab-pane-->
+        </div><!--/tab-content-->
+
+    </div>
+}
+
+@section scripts {
+    <script>
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]'
+            if (successMessage != '') {
+                 if (successMessage == 'Your information updated successfully') {
+                alertify.success(successMessage);
+            } else {
+                alertify.error(successMessage);
+            }
+            }
+        });
+    </script>
+}

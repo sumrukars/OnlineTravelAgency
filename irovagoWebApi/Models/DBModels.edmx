@@ -1,0 +1,706 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="adminID" />
+          </Key>
+          <Property Name="adminID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="30" />
+          <Property Name="surname" Type="nvarchar" MaxLength="30" />
+          <Property Name="email" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Agency">
+          <Key>
+            <PropertyRef Name="agencyID" />
+          </Key>
+          <Property Name="agencyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="address" Type="text" />
+          <Property Name="phone" Type="nvarchar" MaxLength="30" />
+          <Property Name="email" Type="nvarchar" MaxLength="30" />
+          <Property Name="brand" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="customerID" />
+          </Key>
+          <Property Name="customerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="30" />
+          <Property Name="surname" Type="nvarchar" MaxLength="30" />
+          <Property Name="phone" Type="nvarchar" MaxLength="30" />
+          <Property Name="email" Type="nvarchar" MaxLength="30" />
+          <Property Name="address" Type="text" />
+        </EntityType>
+        <EntityType Name="FavoriteOffers">
+          <Key>
+            <PropertyRef Name="favoriteOfferID" />
+          </Key>
+          <Property Name="favoriteOfferID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="customerID" Type="int" />
+          <Property Name="offerID" Type="int" />
+        </EntityType>
+        <EntityType Name="Hotel">
+          <Key>
+            <PropertyRef Name="hotelID" />
+          </Key>
+          <Property Name="hotelID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="20" />
+          <Property Name="address" Type="text" />
+          <Property Name="url" Type="nvarchar" MaxLength="50" />
+          <Property Name="explanation" Type="text" />
+          <Property Name="imgHotel" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="HotelRoomTypes">
+          <Key>
+            <PropertyRef Name="hotelRoomTypeID" />
+          </Key>
+          <Property Name="hotelRoomTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="hotelID" Type="int" />
+          <Property Name="roomTypeID" Type="int" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="loginID" />
+          </Key>
+          <Property Name="loginID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="30" />
+          <Property Name="password" Type="nvarchar" MaxLength="30" />
+          <Property Name="customerID" Type="int" />
+          <Property Name="agencyID" Type="int" />
+          <Property Name="adminID" Type="int" />
+        </EntityType>
+        <EntityType Name="Logs">
+          <Key>
+            <PropertyRef Name="logID" />
+          </Key>
+          <Property Name="logID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="actor" Type="nvarchar" MaxLength="20" />
+          <Property Name="actorID" Type="int" />
+          <Property Name="operation" Type="nvarchar" MaxLength="20" />
+          <Property Name="relatedTable" Type="nvarchar" MaxLength="20" />
+          <Property Name="relatedRecordID" Type="int" />
+        </EntityType>
+        <EntityType Name="Offer">
+          <Key>
+            <PropertyRef Name="offerID" />
+          </Key>
+          <Property Name="offerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="price" Type="int" />
+          <Property Name="agencyID" Type="int" />
+          <Property Name="hotelID" Type="int" />
+          <Property Name="roomTypeID" Type="int" />
+        </EntityType>
+        <EntityType Name="RoomType">
+          <Key>
+            <PropertyRef Name="roomTypeID" />
+          </Key>
+          <Property Name="roomTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="30" />
+          <Property Name="type" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <Association Name="FK__FavoriteO__custo__7A672E12">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="FavoriteOffers" Type="Self.FavoriteOffers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customerID" />
+            </Principal>
+            <Dependent Role="FavoriteOffers">
+              <PropertyRef Name="customerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FavoriteO__offer__7B5B524B">
+          <End Role="Offer" Type="Self.Offer" Multiplicity="0..1" />
+          <End Role="FavoriteOffers" Type="Self.FavoriteOffers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Offer">
+              <PropertyRef Name="offerID" />
+            </Principal>
+            <Dependent Role="FavoriteOffers">
+              <PropertyRef Name="offerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HotelRoom__hotel__04E4BC85">
+          <End Role="Hotel" Type="Self.Hotel" Multiplicity="0..1" />
+          <End Role="HotelRoomTypes" Type="Self.HotelRoomTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hotel">
+              <PropertyRef Name="hotelID" />
+            </Principal>
+            <Dependent Role="HotelRoomTypes">
+              <PropertyRef Name="hotelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__HotelRoom__roomT__03F0984C">
+          <End Role="RoomType" Type="Self.RoomType" Multiplicity="0..1" />
+          <End Role="HotelRoomTypes" Type="Self.HotelRoomTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomType">
+              <PropertyRef Name="roomTypeID" />
+            </Principal>
+            <Dependent Role="HotelRoomTypes">
+              <PropertyRef Name="roomTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Login__adminID__08B54D69">
+          <End Role="Admin" Type="Self.Admin" Multiplicity="0..1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Admin">
+              <PropertyRef Name="adminID" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="adminID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Login__agencyID__778AC167">
+          <End Role="Agency" Type="Self.Agency" Multiplicity="0..1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agency">
+              <PropertyRef Name="agencyID" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="agencyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Login__customerI__76969D2E">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customerID" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="customerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Offer__agencyID__72C60C4A">
+          <End Role="Agency" Type="Self.Agency" Multiplicity="0..1" />
+          <End Role="Offer" Type="Self.Offer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agency">
+              <PropertyRef Name="agencyID" />
+            </Principal>
+            <Dependent Role="Offer">
+              <PropertyRef Name="agencyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Offer__hotelID__73BA3083">
+          <End Role="Hotel" Type="Self.Hotel" Multiplicity="0..1" />
+          <End Role="Offer" Type="Self.Offer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hotel">
+              <PropertyRef Name="hotelID" />
+            </Principal>
+            <Dependent Role="Offer">
+              <PropertyRef Name="hotelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Offer__roomTypeI__05D8E0BE">
+          <End Role="RoomType" Type="Self.RoomType" Multiplicity="0..1" />
+          <End Role="Offer" Type="Self.Offer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomType">
+              <PropertyRef Name="roomTypeID" />
+            </Principal>
+            <Dependent Role="Offer">
+              <PropertyRef Name="roomTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Agency" EntityType="Self.Agency" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FavoriteOffers" EntityType="Self.FavoriteOffers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hotel" EntityType="Self.Hotel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HotelRoomTypes" EntityType="Self.HotelRoomTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Logs" EntityType="Self.Logs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Offer" EntityType="Self.Offer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoomType" EntityType="Self.RoomType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__FavoriteO__custo__7A672E12" Association="Self.FK__FavoriteO__custo__7A672E12">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="FavoriteOffers" EntitySet="FavoriteOffers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FavoriteO__offer__7B5B524B" Association="Self.FK__FavoriteO__offer__7B5B524B">
+            <End Role="Offer" EntitySet="Offer" />
+            <End Role="FavoriteOffers" EntitySet="FavoriteOffers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HotelRoom__hotel__04E4BC85" Association="Self.FK__HotelRoom__hotel__04E4BC85">
+            <End Role="Hotel" EntitySet="Hotel" />
+            <End Role="HotelRoomTypes" EntitySet="HotelRoomTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__HotelRoom__roomT__03F0984C" Association="Self.FK__HotelRoom__roomT__03F0984C">
+            <End Role="RoomType" EntitySet="RoomType" />
+            <End Role="HotelRoomTypes" EntitySet="HotelRoomTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Login__adminID__08B54D69" Association="Self.FK__Login__adminID__08B54D69">
+            <End Role="Admin" EntitySet="Admin" />
+            <End Role="Login" EntitySet="Login" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Login__agencyID__778AC167" Association="Self.FK__Login__agencyID__778AC167">
+            <End Role="Agency" EntitySet="Agency" />
+            <End Role="Login" EntitySet="Login" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Login__customerI__76969D2E" Association="Self.FK__Login__customerI__76969D2E">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Login" EntitySet="Login" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Offer__agencyID__72C60C4A" Association="Self.FK__Offer__agencyID__72C60C4A">
+            <End Role="Agency" EntitySet="Agency" />
+            <End Role="Offer" EntitySet="Offer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Offer__hotelID__73BA3083" Association="Self.FK__Offer__hotelID__73BA3083">
+            <End Role="Hotel" EntitySet="Hotel" />
+            <End Role="Offer" EntitySet="Offer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Offer__roomTypeI__05D8E0BE" Association="Self.FK__Offer__roomTypeI__05D8E0BE">
+            <End Role="RoomType" EntitySet="RoomType" />
+            <End Role="Offer" EntitySet="Offer" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Agency">
+          <Key>
+            <PropertyRef Name="agencyID" />
+          </Key>
+          <Property Name="agencyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="brand" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Logins" Relationship="Self.FK__Login__agencyID__778AC167" FromRole="Agency" ToRole="Login" />
+          <NavigationProperty Name="Offers" Relationship="Self.FK__Offer__agencyID__72C60C4A" FromRole="Agency" ToRole="Offer" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="customerID" />
+          </Key>
+          <Property Name="customerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="surname" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Logins" Relationship="Self.FK__Login__customerI__76969D2E" FromRole="Customer" ToRole="Login" />
+          <NavigationProperty Name="FavoriteOffers" Relationship="Model.FK__FavoriteO__custo__7A672E12" FromRole="Customer" ToRole="FavoriteOffer" />
+        </EntityType>
+        <EntityType Name="Hotel">
+          <Key>
+            <PropertyRef Name="hotelID" />
+          </Key>
+          <Property Name="hotelID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="url" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="explanation" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Offers" Relationship="Self.FK__Offer__hotelID__73BA3083" FromRole="Hotel" ToRole="Offer" />
+          <Property Name="imgHotel" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="HotelRoomTypes" Relationship="Model.FK__HotelRoom__hotel__04E4BC85" FromRole="Hotel" ToRole="HotelRoomType" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="loginID" />
+          </Key>
+          <Property Name="loginID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="customerID" Type="Int32" />
+          <Property Name="agencyID" Type="Int32" />
+          <NavigationProperty Name="Agency" Relationship="Self.FK__Login__agencyID__778AC167" FromRole="Login" ToRole="Agency" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Login__customerI__76969D2E" FromRole="Login" ToRole="Customer" />
+          <Property Name="adminID" Type="Int32" />
+          <NavigationProperty Name="Admin" Relationship="Model.FK__Login__adminID__08B54D69" FromRole="Login" ToRole="Admin" />
+        </EntityType>
+        <EntityType Name="Offer">
+          <Key>
+            <PropertyRef Name="offerID" />
+          </Key>
+          <Property Name="offerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="price" Type="Int32" />
+          <Property Name="agencyID" Type="Int32" />
+          <Property Name="hotelID" Type="Int32" />
+          <NavigationProperty Name="Agency" Relationship="Self.FK__Offer__agencyID__72C60C4A" FromRole="Offer" ToRole="Agency" />
+          <NavigationProperty Name="Hotel" Relationship="Self.FK__Offer__hotelID__73BA3083" FromRole="Offer" ToRole="Hotel" />
+          <NavigationProperty Name="FavoriteOffers" Relationship="Model.FK__FavoriteO__offer__7B5B524B" FromRole="Offer" ToRole="FavoriteOffer" />
+          <Property Name="roomTypeID" Type="Int32" />
+          <NavigationProperty Name="RoomType" Relationship="Model.FK__Offer__roomTypeI__05D8E0BE" FromRole="Offer" ToRole="RoomType" />
+        </EntityType>
+        <Association Name="FK__Login__agencyID__778AC167">
+          <End Role="Agency" Type="Self.Agency" Multiplicity="0..1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agency">
+              <PropertyRef Name="agencyID" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="agencyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Offer__agencyID__72C60C4A">
+          <End Role="Agency" Type="Self.Agency" Multiplicity="0..1" />
+          <End Role="Offer" Type="Self.Offer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agency">
+              <PropertyRef Name="agencyID" />
+            </Principal>
+            <Dependent Role="Offer">
+              <PropertyRef Name="agencyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Login__customerI__76969D2E">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customerID" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="customerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Offer__hotelID__73BA3083">
+          <End Role="Hotel" Type="Self.Hotel" Multiplicity="0..1" />
+          <End Role="Offer" Type="Self.Offer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hotel">
+              <PropertyRef Name="hotelID" />
+            </Principal>
+            <Dependent Role="Offer">
+              <PropertyRef Name="hotelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DBModel" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Agencies" EntityType="Self.Agency" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Hotels" EntityType="Self.Hotel" />
+          <EntitySet Name="Logins" EntityType="Self.Login" />
+          <EntitySet Name="Offers" EntityType="Self.Offer" />
+          <AssociationSet Name="FK__Login__agencyID__778AC167" Association="Self.FK__Login__agencyID__778AC167">
+            <End Role="Agency" EntitySet="Agencies" />
+            <End Role="Login" EntitySet="Logins" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Offer__agencyID__72C60C4A" Association="Self.FK__Offer__agencyID__72C60C4A">
+            <End Role="Agency" EntitySet="Agencies" />
+            <End Role="Offer" EntitySet="Offers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Login__customerI__76969D2E" Association="Self.FK__Login__customerI__76969D2E">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Login" EntitySet="Logins" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Offer__hotelID__73BA3083" Association="Self.FK__Offer__hotelID__73BA3083">
+            <End Role="Hotel" EntitySet="Hotels" />
+            <End Role="Offer" EntitySet="Offers" />
+          </AssociationSet>
+          <EntitySet Name="FavoriteOffers" EntityType="Model.FavoriteOffer" />
+          <AssociationSet Name="FK__FavoriteO__custo__7A672E12" Association="Model.FK__FavoriteO__custo__7A672E12">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="FavoriteOffer" EntitySet="FavoriteOffers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__FavoriteO__offer__7B5B524B" Association="Model.FK__FavoriteO__offer__7B5B524B">
+            <End Role="Offer" EntitySet="Offers" />
+            <End Role="FavoriteOffer" EntitySet="FavoriteOffers" />
+          </AssociationSet>
+          <EntitySet Name="HotelRoomTypes" EntityType="Model.HotelRoomType" />
+          <AssociationSet Name="FK__HotelRoom__hotel__04E4BC85" Association="Model.FK__HotelRoom__hotel__04E4BC85">
+            <End Role="Hotel" EntitySet="Hotels" />
+            <End Role="HotelRoomType" EntitySet="HotelRoomTypes" />
+          </AssociationSet>
+          <EntitySet Name="RoomTypes" EntityType="Model.RoomType" />
+          <AssociationSet Name="FK__HotelRoom__roomT__03F0984C" Association="Model.FK__HotelRoom__roomT__03F0984C">
+            <End Role="RoomType" EntitySet="RoomTypes" />
+            <End Role="HotelRoomType" EntitySet="HotelRoomTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Offer__roomTypeI__05D8E0BE" Association="Model.FK__Offer__roomTypeI__05D8E0BE">
+            <End Role="RoomType" EntitySet="RoomTypes" />
+            <End Role="Offer" EntitySet="Offers" />
+          </AssociationSet>
+          <EntitySet Name="Admins" EntityType="Model.Admin" />
+          <AssociationSet Name="FK__Login__adminID__08B54D69" Association="Model.FK__Login__adminID__08B54D69">
+            <End Role="Admin" EntitySet="Admins" />
+            <End Role="Login" EntitySet="Logins" />
+          </AssociationSet>
+          <EntitySet Name="Logs" EntityType="Model.Log" />
+        </EntityContainer>
+        <EntityType Name="FavoriteOffer">
+          <Key>
+            <PropertyRef Name="favoriteOfferID" />
+          </Key>
+          <Property Name="favoriteOfferID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="customerID" Type="Int32" />
+          <Property Name="offerID" Type="Int32" />
+          <NavigationProperty Name="Customer" Relationship="Model.FK__FavoriteO__custo__7A672E12" FromRole="FavoriteOffer" ToRole="Customer" />
+          <NavigationProperty Name="Offer" Relationship="Model.FK__FavoriteO__offer__7B5B524B" FromRole="FavoriteOffer" ToRole="Offer" />
+        </EntityType>
+        <Association Name="FK__FavoriteO__custo__7A672E12">
+          <End Type="Model.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="Model.FavoriteOffer" Role="FavoriteOffer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="customerID" />
+            </Principal>
+            <Dependent Role="FavoriteOffer">
+              <PropertyRef Name="customerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__FavoriteO__offer__7B5B524B">
+          <End Type="Model.Offer" Role="Offer" Multiplicity="0..1" />
+          <End Type="Model.FavoriteOffer" Role="FavoriteOffer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Offer">
+              <PropertyRef Name="offerID" />
+            </Principal>
+            <Dependent Role="FavoriteOffer">
+              <PropertyRef Name="offerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="HotelRoomType">
+          <Key>
+            <PropertyRef Name="hotelRoomTypeID" />
+          </Key>
+          <Property Name="hotelRoomTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="hotelID" Type="Int32" />
+          <Property Name="roomTypeID" Type="Int32" />
+          <NavigationProperty Name="Hotel" Relationship="Model.FK__HotelRoom__hotel__04E4BC85" FromRole="HotelRoomType" ToRole="Hotel" />
+          <NavigationProperty Name="RoomType" Relationship="Model.FK__HotelRoom__roomT__03F0984C" FromRole="HotelRoomType" ToRole="RoomType" />
+        </EntityType>
+        <Association Name="FK__HotelRoom__hotel__04E4BC85">
+          <End Type="Model.Hotel" Role="Hotel" Multiplicity="0..1" />
+          <End Type="Model.HotelRoomType" Role="HotelRoomType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Hotel">
+              <PropertyRef Name="hotelID" />
+            </Principal>
+            <Dependent Role="HotelRoomType">
+              <PropertyRef Name="hotelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RoomType">
+          <Key>
+            <PropertyRef Name="roomTypeID" />
+          </Key>
+          <Property Name="roomTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="HotelRoomTypes" Relationship="Model.FK__HotelRoom__roomT__03F0984C" FromRole="RoomType" ToRole="HotelRoomType" />
+          <NavigationProperty Name="Offers" Relationship="Model.FK__Offer__roomTypeI__05D8E0BE" FromRole="RoomType" ToRole="Offer" />
+        </EntityType>
+        <Association Name="FK__HotelRoom__roomT__03F0984C">
+          <End Type="Model.RoomType" Role="RoomType" Multiplicity="0..1" />
+          <End Type="Model.HotelRoomType" Role="HotelRoomType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomType">
+              <PropertyRef Name="roomTypeID" />
+            </Principal>
+            <Dependent Role="HotelRoomType">
+              <PropertyRef Name="roomTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Offer__roomTypeI__05D8E0BE">
+          <End Type="Model.RoomType" Role="RoomType" Multiplicity="0..1" />
+          <End Type="Model.Offer" Role="Offer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomType">
+              <PropertyRef Name="roomTypeID" />
+            </Principal>
+            <Dependent Role="Offer">
+              <PropertyRef Name="roomTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="adminID" />
+          </Key>
+          <Property Name="adminID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="surname" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Logins" Relationship="Model.FK__Login__adminID__08B54D69" FromRole="Admin" ToRole="Login" />
+        </EntityType>
+        <Association Name="FK__Login__adminID__08B54D69">
+          <End Type="Model.Admin" Role="Admin" Multiplicity="0..1" />
+          <End Type="Model.Login" Role="Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Admin">
+              <PropertyRef Name="adminID" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="adminID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Log">
+          <Key>
+            <PropertyRef Name="logID" />
+          </Key>
+          <Property Name="logID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="actor" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="actorID" Type="Int32" />
+          <Property Name="operation" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="relatedTable" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="relatedRecordID" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="DBModel">
+          <EntitySetMapping Name="Agencies">
+            <EntityTypeMapping TypeName="Model.Agency">
+              <MappingFragment StoreEntitySet="Agency">
+                <ScalarProperty Name="agencyID" ColumnName="agencyID" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="brand" ColumnName="brand" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="Model.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="customerID" ColumnName="customerID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="address" ColumnName="address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Hotels">
+            <EntityTypeMapping TypeName="Model.Hotel">
+              <MappingFragment StoreEntitySet="Hotel">
+                <ScalarProperty Name="imgHotel" ColumnName="imgHotel" />
+                <ScalarProperty Name="hotelID" ColumnName="hotelID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="explanation" ColumnName="explanation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="Model.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="adminID" ColumnName="adminID" />
+                <ScalarProperty Name="loginID" ColumnName="loginID" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="customerID" ColumnName="customerID" />
+                <ScalarProperty Name="agencyID" ColumnName="agencyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Offers">
+            <EntityTypeMapping TypeName="Model.Offer">
+              <MappingFragment StoreEntitySet="Offer">
+                <ScalarProperty Name="roomTypeID" ColumnName="roomTypeID" />
+                <ScalarProperty Name="offerID" ColumnName="offerID" />
+                <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="agencyID" ColumnName="agencyID" />
+                <ScalarProperty Name="hotelID" ColumnName="hotelID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FavoriteOffers">
+            <EntityTypeMapping TypeName="Model.FavoriteOffer">
+              <MappingFragment StoreEntitySet="FavoriteOffers">
+                <ScalarProperty Name="offerID" ColumnName="offerID" />
+                <ScalarProperty Name="customerID" ColumnName="customerID" />
+                <ScalarProperty Name="favoriteOfferID" ColumnName="favoriteOfferID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HotelRoomTypes">
+            <EntityTypeMapping TypeName="Model.HotelRoomType">
+              <MappingFragment StoreEntitySet="HotelRoomTypes">
+                <ScalarProperty Name="roomTypeID" ColumnName="roomTypeID" />
+                <ScalarProperty Name="hotelID" ColumnName="hotelID" />
+                <ScalarProperty Name="hotelRoomTypeID" ColumnName="hotelRoomTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomTypes">
+            <EntityTypeMapping TypeName="Model.RoomType">
+              <MappingFragment StoreEntitySet="RoomType">
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="roomTypeID" ColumnName="roomTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="Model.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="adminID" ColumnName="adminID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logs">
+            <EntityTypeMapping TypeName="Model.Log">
+              <MappingFragment StoreEntitySet="Logs">
+                <ScalarProperty Name="relatedRecordID" ColumnName="relatedRecordID" />
+                <ScalarProperty Name="relatedTable" ColumnName="relatedTable" />
+                <ScalarProperty Name="operation" ColumnName="operation" />
+                <ScalarProperty Name="actorID" ColumnName="actorID" />
+                <ScalarProperty Name="actor" ColumnName="actor" />
+                <ScalarProperty Name="logID" ColumnName="logID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

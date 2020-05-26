@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7c23d22e172348f5809aa1e1ba8e16f2" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.Agency" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Customer" Width="1.5" PointX="8.875" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Hotel" Width="1.5" PointX="5.375" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Login" Width="1.5" PointX="3.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Offer" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK__Login__agencyID__778AC167" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Offer__agencyID__72C60C4A" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Login__customerI__76969D2E" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK__Offer__hotelID__73BA3083" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model.FavoriteOffer" Width="1.5" PointX="5.5" PointY="4.75" />
+        <AssociationConnector Association="Model.FK__FavoriteO__custo__7A672E12" />
+        <AssociationConnector Association="Model.FK__FavoriteO__offer__7B5B524B" />
+        <EntityTypeShape EntityType="Model.HotelRoomType" Width="1.5" PointX="13.125" PointY="1.875" />
+        <AssociationConnector Association="Model.FK__HotelRoom__hotel__04E4BC85" />
+        <EntityTypeShape EntityType="Model.RoomType" Width="1.5" PointX="9" PointY="1.125" />
+        <AssociationConnector Association="Model.FK__HotelRoom__roomT__03F0984C" />
+        <AssociationConnector Association="Model.FK__Offer__roomTypeI__05D8E0BE" />
+        <EntityTypeShape EntityType="Model.Admin" Width="1.5" PointX="5.375" PointY="7.875" />
+        <AssociationConnector Association="Model.FK__Login__adminID__08B54D69" />
+        <EntityTypeShape EntityType="Model.Log" Width="1.5" PointX="0.75" PointY="6.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

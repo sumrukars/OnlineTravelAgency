@@ -1,0 +1,17 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string CurrentName = Convert.ToString(HttpContext.Current.Request.RequestContext.RouteData.Values["Controller"]);
+
+    if (CurrentName == "Customer")
+    {
+        Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+    } else if (CurrentName == "Agency")
+    {
+        Layout = "~/Views/Shared/_AgencyLayout.cshtml";
+    }
+    else if (CurrentName == "Admin")
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+
+}

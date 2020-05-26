@@ -1,0 +1,97 @@
+﻿
+@{
+	ViewBag.Title = "CheckFlights";
+}
+
+<br>
+
+<h1>Countries Travel Risks</h1>
+
+<h4>Here, you can see countries travel risks from other traveller's experiences </h4>
+
+<div class="table-responsive">
+	<table class="table table-striped" id="table">
+		<thead>
+			<tr>
+				<th>Country Name</th>
+				<th>Risk Score</th>
+				<th>Updated</th>
+				<th>Source</th>
+			</tr>
+		</thead>
+
+		<tbody id="tbody" style="color:#696969; font-size:14px;"></tbody>
+	</table>
+</div>
+
+
+@section Scripts {
+	@Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+
+   
+
+	doGet();
+	function doGet() {
+        var x = "AD";
+        var y = "data";
+        var name = "";
+        var riskScore = "";
+        var updated = "";
+        var source = "";
+
+
+      
+        $.ajax({
+            type: "GET",
+            url: "https://www.travel-advisory.info/api",
+            //force to handle it as text
+            dataType: "json",
+            success: function(data) {
+
+                $.each(data, function (index, item) {
+                    $.each(item, function (key, value) {
+                         
+                        $.each(value, function (i, j) {
+                            
+                            if (i == "name") {
+                                name = j;
+                            } else if (i == "advisory") {
+                                $.each(j, function (k, l) {
+                                    if (k == "score") {
+                                        riskScore = l;
+                                    }
+                                    else if (k == "updated") {
+                                        updated = l;
+                                    }
+                                    else if (k == "source") {
+                                        source = l;
+                                    }
+                                })
+                            }
+                        })
+                        if (name != "" && riskScore != "" && updated != "" && source != "") {
+                             $("table").find('tbody').append(
+                                $('<tr>'));
+                            $("table").find('tbody').append(
+                                $('<th>' + name + '</th>'));
+                            $("table").find('tbody').append(
+                                $('<th>' + riskScore + '</th>'));
+                            $("table").find('tbody').append(
+                                $('<th>' + updated + '</th>'));
+                            $("table").find('tbody').append(
+                                $('<th>' + source + '</th>'));
+                              $("table").find('tbody').append(
+                                $('</tr>'));
+                        }
+                        
+                    })
+                })
+            }
+        });
+		
+	  
+	}
+</script>
+}
