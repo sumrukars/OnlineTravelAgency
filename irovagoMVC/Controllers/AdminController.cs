@@ -20,6 +20,13 @@ namespace irovagoMVC.Controllers
             return View(logList);
         }
 
+        public ActionResult LogOut()
+        {   
+           
+            return RedirectToAction("Index","Home");
+        }
+
+
         public ActionResult AdminManageHotel()
         {
             IEnumerable<HotelMVCModel> hotelList;
@@ -92,6 +99,14 @@ namespace irovagoMVC.Controllers
         {
             log.email = log.Agency.email;
             HttpResponseMessage response = GlobalVariables.webApiClient.PostAsJsonAsync("Logins", log).Result;
+            if (response.IsSuccessStatusCode || response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                TempData["SuccessMessage"] = "Your information added successfully"; 
+            }
+            else
+            {
+                TempData["SuccessMessage"] = "Operation failed";
+            }
             return View();
         }
 
@@ -140,19 +155,35 @@ namespace irovagoMVC.Controllers
 
         public ActionResult SubmitHotel(ManageHotelMVCModel manageHotelMVCModel)
         {
-           
+            ManageHotelMVCModel temp = (ManageHotelMVCModel)Session["AddOrEditHotel"];
+            manageHotelMVCModel.hotel.imgHotel = temp.hotel.imgHotel;
 
             if (manageHotelMVCModel.hotel.hotelID != 0) //update
             {
                 HttpResponseMessage responseUpdate = GlobalVariables.webApiClient.PutAsJsonAsync("Hotels/" + manageHotelMVCModel.hotel.hotelID, manageHotelMVCModel.hotel).Result;
+                controlResult(responseUpdate);
             }
             else //add
             {
                 HttpResponseMessage responseUpdate = GlobalVariables.webApiClient.PostAsJsonAsync("Hotels", manageHotelMVCModel.hotel).Result;
+                controlResult(responseUpdate);
             }
 
             saveNewRoomTypesToDB();
-            return RedirectToAction("AddHotel",manageHotelMVCModel);
+            return RedirectToAction("AdminManageHotel","Admin");
+        }
+
+        public void controlResult(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode || response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                TempData["SuccessMessage"] = "Your information updated successfully";
+
+            }
+            else
+            {
+                TempData["SuccessMessage"] = "Operation failed";
+            }
         }
 
         public void saveNewRoomTypesToDB()

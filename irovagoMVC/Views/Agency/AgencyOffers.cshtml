@@ -21,7 +21,8 @@
                         <h2 class="card-title">@item.Hotel.name</h2>
                         <p class="card-text">@item.Hotel.explanation</p>
                         <p class="card-text">@item.Hotel.address</p>
-                        <h3 class="card-text">@item.price TL</h3>
+                        <p class="card-text">@item.RoomType.displayName</p>
+                        <h3 class="card-text">@item.price $</h3>
                         <p class="card-text">@item.Agency.brand</p>
                         <div>
                             <div class="col-xs-1" style="float:right">
@@ -38,7 +39,7 @@
                                     <button class="edit" value="AddOffer" type="submit" data-toggle="tooltip" style="font-size:25px;  float:right; margin-right:20px; border:none; background-color:transparent;"><i class="glyphicon glyphicon-pencil"></i></button>
                                 }
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>

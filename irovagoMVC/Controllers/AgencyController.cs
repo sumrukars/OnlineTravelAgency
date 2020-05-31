@@ -24,6 +24,12 @@ namespace irovagoMVC.Controllers
             return View(offerList);
         }
 
+        public ActionResult LogOut()
+        {
+            Session["AgencyId"] = null;
+            return RedirectToAction("Index", "Home");
+        }
+
         public void createLog(string actor, int? actorId, string operation, string relatedTable, int? relatedRecordId)
         {
             LogMVCModel log = new LogMVCModel();
@@ -45,6 +51,13 @@ namespace irovagoMVC.Controllers
                 hotel = response.Content.ReadAsAsync<HotelMVCModel>().Result;
                 createLog("Agency", agencyId, "GET", "Hotels", 0);
                 offer.Hotel = hotel;
+
+                RoomTypeMVCModel room;
+                HttpResponseMessage responseRoom = GlobalVariables.webApiClient.GetAsync("RoomTypes/" + offer.roomTypeID).Result;
+                room = responseRoom.Content.ReadAsAsync<RoomTypeMVCModel>().Result;
+                offer.RoomType = room;
+                offer.RoomType.displayName = room.name + " " + room.type;
+
                 AgencyMVCModel agency;
                 HttpResponseMessage responseAgency = GlobalVariables.webApiClient.GetAsync("Agencies/" + offer.agencyID).Result;
                 agency = responseAgency.Content.ReadAsAsync<AgencyMVCModel>().Result;
@@ -300,19 +313,19 @@ namespace irovagoMVC.Controllers
                 Thread.Sleep(100);
                 if (response.IsSuccessStatusCode || response.StatusCode == System.Net.HttpStatusCode.InternalServerError )
                 {   
-                    TempData["SuccessMessage"] = "Your information updated successfully";
+                    TempData["SuccessMessage"] = "Your information added successfully";
                     addOfferMVCModel = getHotelAndRoomList(addOfferMVCModel);
                 }
                 else
                 {
-                    TempData["SuccessMessage"] = "Information update operation failed";
+                    TempData["SuccessMessage"] = "Operation failed";
                 }
                
             } else //güncelleme
             {
                 HttpResponseMessage response = GlobalVariables.webApiClient.PutAsJsonAsync("Offers/" + addOfferMVCModel.offer.offerID, addOfferMVCModel.offer).Result;
                 createLog("Agency", agencyId, "UPDATE", "Offers", addOfferMVCModel.offer.offerID);
-                if (response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode || response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
                 {
                     TempData["SuccessMessage"] = "Your information updated successfully";
                     addOfferMVCModel = getHotelAndRoomList(addOfferMVCModel);

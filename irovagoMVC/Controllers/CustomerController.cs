@@ -34,6 +34,12 @@ namespace irovagoMVC.Controllers
             return View(offerList);
         }
 
+        public ActionResult LogOut()
+        {
+            Session["CustomerId"] = null;
+            return RedirectToAction("Index", "Home");
+        }
+
         public void createLog(string actor, int actorId, string operation, string relatedTable, int? relatedRecordId)
         {
             LogMVCModel log = new LogMVCModel();
@@ -128,7 +134,13 @@ namespace irovagoMVC.Controllers
                 HotelMVCModel hotel;
                 HttpResponseMessage response = GlobalVariables.webApiClient.GetAsync("Hotels/" + offer.hotelID).Result;
                 hotel = response.Content.ReadAsAsync<HotelMVCModel>().Result;
-                
+
+                RoomTypeMVCModel room;
+                HttpResponseMessage responseRoom = GlobalVariables.webApiClient.GetAsync("RoomTypes/" + offer.roomTypeID).Result;
+                room = responseRoom.Content.ReadAsAsync<RoomTypeMVCModel>().Result;
+                offer.RoomType = room;
+                offer.RoomType.displayName = room.name + " " + room.type;
+
                 createLog("Customer", customerId, "GET", "Hotels", 0);
                 offer.Hotel = hotel;
                 AgencyMVCModel agency;
@@ -202,6 +214,13 @@ namespace irovagoMVC.Controllers
             {
                 HttpResponseMessage response = GlobalVariables.webApiClient.GetAsync("Offers/"+favorite.offerID).Result;
                 favorite.Offer = response.Content.ReadAsAsync<OfferMVCModel>().Result;
+
+                RoomTypeMVCModel room;
+                HttpResponseMessage responseRoom = GlobalVariables.webApiClient.GetAsync("RoomTypes/" + favorite.Offer.roomTypeID).Result;
+                room = responseRoom.Content.ReadAsAsync<RoomTypeMVCModel>().Result;
+                favorite.Offer.RoomType = room;
+                favorite.Offer.RoomType.displayName = room.name + " " + room.type;
+
                 createLog("Customer", customerID, "GET", "Offers", 0);
                 HttpResponseMessage responseHotel = GlobalVariables.webApiClient.GetAsync("Hotels/" + favorite.Offer.hotelID).Result;
                 favorite.Offer.Hotel = responseHotel.Content.ReadAsAsync<HotelMVCModel>().Result;

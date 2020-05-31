@@ -167,7 +167,7 @@
              dataType: "json",
             success: function (response) {
                 
-                window.location = '@Url.Action("AddHotel", "Admin", new { id = "modelHotelId" })';
+                window.location = '@Url.Action("AdminManageHotel", "Admin")';
             },
             error: function () {
 
@@ -242,6 +242,8 @@
         });
 
     });
+
+       
 
 
 </script>

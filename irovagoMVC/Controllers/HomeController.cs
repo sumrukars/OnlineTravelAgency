@@ -28,6 +28,11 @@ namespace irovagoMVC.Controllers
                 HttpResponseMessage response = GlobalVariables.webApiClient.GetAsync("Hotels/" + offer.hotelID).Result;
                 hotel = response.Content.ReadAsAsync<HotelMVCModel>().Result;
                 offer.Hotel = hotel;
+                RoomTypeMVCModel room;
+                HttpResponseMessage responseRoom = GlobalVariables.webApiClient.GetAsync("RoomTypes/" + offer.roomTypeID).Result;
+                room = responseRoom.Content.ReadAsAsync<RoomTypeMVCModel>().Result;
+                offer.RoomType = room;
+                offer.RoomType.displayName = room.name + " " + room.type;
                 AgencyMVCModel agency;
                 HttpResponseMessage responseAgency = GlobalVariables.webApiClient.GetAsync("Agencies/" + offer.agencyID).Result;
                 agency = responseAgency.Content.ReadAsAsync<AgencyMVCModel>().Result;
@@ -69,7 +74,7 @@ namespace irovagoMVC.Controllers
                     } else if (login.adminID != null)
                     {
                         Session["AdminId"] = login.adminID;
-                        return RedirectToAction("AdminHomePage", "Admin");
+                        return RedirectToAction("HomePage", "Admin");
                     }
                    
                 }
